@@ -150,6 +150,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/md_theme_primary"
         app:tint="@android:color/white"
         android:contentDescription="Tambah Transaksi Baru" />
 

@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.androidx.room)
 }
 
 android {
@@ -30,6 +31,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
+room {
+    schemaDirectory("$projectDir/schemas")
+}
 
 dependencies {
 
@@ -41,7 +45,7 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("androidx.core:core-splashscreen:1.0.1")
-    val room_version = "2.6.1"
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
 }
