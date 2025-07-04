@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material Design 3 Palette (Inferred from usage) -->
+    <color name="md_theme_primary">#1D4ED8</color>
+    <color name="md_theme_onPrimary">#FFFFFF</color>
+    <color name="md_theme_secondary">#3B82F6</color>
+    <color name="md_theme_onSecondary">#FFFFFF</color>
+    <color name="md_theme_background">#f1f5f9</color>
+    <color name="md_theme_onBackground">#FF000000</color>
+    <color name="md_theme_surface">#FFFFFF</color>
+    <color name="md_theme_onSurface">#FF000000</color>
+    <color name="md_theme_error">#DC2626</color>
+    <color name="md_theme_onError">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Custom Colors based on usage -->
+    <color name="color_income">#16A34A</color>
+    <color name="color_expense">@android:color/holo_red_dark</color>
+    <color name="color_button_cancel">#334155</color>
+    <color name="color_radio_checked_bg">#EFF6FF</color>
+    <color name="color_radio_default_stroke">#E5E7EB</color>
+
+</resources>

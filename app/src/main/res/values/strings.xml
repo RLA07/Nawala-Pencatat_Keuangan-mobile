@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Nawala</string>
+    <string-array name="kategori_transaksi">
+        <item>Gaya Hidup &amp; Hiburan</item>
+        <item>Kebutuhan Pokok (Primer)</item>
+        <item>Kesehatan &amp; Perawatan Diri</item>
+        <item>Lain-lain &amp; Tak Terduga</item>
+        <item>Pendidikan &amp; Pengembangan Diri</item>
+        <item>Rumah &amp; Tagihan</item>
+        <item>Sosial &amp; Keluarga</item>
+        <item>Transportasi</item>
+        <item>Uang Bulanan</item>
+    </string-array>
+</resources>
