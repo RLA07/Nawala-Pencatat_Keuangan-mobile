@@ -22,9 +22,14 @@ Aplikasi pencatat keuangan pribadi untuk Android yang simpel, privat, dan bekerj
   - `[✓]` **Create:** Menambah data transaksi baru (pemasukan/pengeluaran).
   - `[✓]` **Read:** Menampilkan riwayat transaksi yang dikelompokkan per tanggal.
   - `[✓]` **Update:** Mengubah data transaksi yang sudah ada.
-  - `[✓]` **Delete:** Menghapus data transaksi dengan mudah.
-- [x] **Desain Modern & Intuitif:** Antarmuka yang bersih dan mudah digunakan berdasarkan prinsip `Material Design`, nyaman diakses di berbagai ukuran layar.
-- [x] **Pengalaman Pengguna (UX) Ditingkatkan:** Fitur seperti pemisahan sumber dana (Bank/Dompet), tombol dengan kode warna, dan input tanggal yang interaktif.
+  - `[✓]` **Delete:** Menghapus data transaksi secara individual.
+- [x] **Manajemen Data Lengkap:**
+  - `[✓]` **Ekspor ke CSV:** Cadangkan seluruh data transaksi Anda ke dalam format CSV.
+  - `[✓]` **Impor dari CSV:** Pulihkan data dari file cadangan CSV dengan mudah.
+  - `[✓]` **Ekspor Laporan PDF:** Buat laporan keuangan profesional dalam format PDF untuk rentang tanggal yang bisa Anda tentukan sendiri.
+  - `[✓]` **Hapus Semua Data:** Opsi untuk mereset dan menghapus seluruh riwayat transaksi.
+- [x] **Laporan Detail:** Halaman khusus untuk melihat rincian saldo, ringkasan pemasukan/pengeluaran mingguan dan bulanan, serta total saldo per sumber dana (Bank/Dompet).
+- [x] **Desain Modern & Intuitif:** Antarmuka yang bersih dan mudah digunakan berdasarkan prinsip `Material Design`.
 
 ---
 
@@ -149,10 +154,10 @@ Struktur folder ini dirancang untuk kerapian dan kemudahan pengelolaan, dengan f
 
 Beberapa fitur dan perbaikan yang direncanakan untuk pengembangan selanjutnya:
 
-- [ ] Implementasi Unit Testing & UI Testing.
-- [ ] Fitur ekspor data ke format CSV atau PDF.
+- [ ] Implementasi Unit Testing & UI Testing untuk meningkatkan keandalan kode.
 - [ ] Fitur penganggaran (budgeting) bulanan per kategori.
-- [ ] Fitur pencarian dan filter transaksi.
+- [ ] Fitur pencarian dan filter untuk memudahkan penemuan transaksi spesifik.
+- [ ] Visualisasi data dengan grafik atau chart untuk analisis yang lebih mendalam.
 
 ---
 

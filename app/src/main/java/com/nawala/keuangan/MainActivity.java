@@ -1,8 +1,10 @@
 package com.nawala.keuangan;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.LinearLayout; // << GANTI DARI CARDVIEW
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -15,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -24,15 +25,16 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
 
     private AppDatabase db;
-    private RecyclerView recyclerView;
     private TransactionAdapter adapter;
-    private List<Transaction> transactionList = new ArrayList<>(); // Keep for summary calculation
     private TextView tvSaldo, tvIncome, tvExpense;
     private CardView cvSaldo;
+    // --- PERBAIKAN 1: Ubah tipe data dari CardView menjadi LinearLayout
+    private LinearLayout llMonthlySummary;
 
     private final ExecutorService databaseExecutor = Executors.newSingleThreadExecutor();
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
+    // --- PERBAIKAN 2: Hapus anotasi @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +47,11 @@ public class MainActivity extends AppCompatActivity {
         tvIncome = findViewById(R.id.tvIncome);
         tvExpense = findViewById(R.id.tvExpense);
         cvSaldo = findViewById(R.id.cvSaldo);
-        recyclerView = findViewById(R.id.recyclerViewTransactions);
+        llMonthlySummary = findViewById(R.id.llMonthlySummary); // Sekarang tipenya sudah benar
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewTransactions);
         FloatingActionButton fab = findViewById(R.id.fabTambah);
 
-        adapter = new TransactionAdapter(new ArrayList<>()); // Initialize with empty list
+        adapter = new TransactionAdapter(new ArrayList<>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -57,7 +60,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Kedua listener ini sekarang aman dan menuju ke tujuan yang sama
         cvSaldo.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, DetailSaldoActivity.class);
+            startActivity(intent);
+        });
+
+        llMonthlySummary.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, DetailSaldoActivity.class);
             startActivity(intent);
         });
@@ -73,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         databaseExecutor.execute(() -> {
             final List<Transaction> results = db.transactionDao().getAll();
 
-            // Sort transactions by date in descending order
-            Collections.sort(results, (t1, t2) -> Long.compare(t2.transactionDate, t1.transactionDate));
+            // Pengurutan tetap di sini
+            results.sort((t1, t2) -> Long.compare(t2.transactionDate, t1.transactionDate));
 
             List<Object> groupedList = new ArrayList<>();
             String lastDateHeader = "";
@@ -83,23 +92,23 @@ public class MainActivity extends AppCompatActivity {
             for (Transaction transaction : results) {
                 String currentDateHeader = sdf.format(transaction.transactionDate);
                 if (!currentDateHeader.equals(lastDateHeader)) {
-                    groupedList.add(currentDateHeader); // Add date header
+                    groupedList.add(currentDateHeader);
                     lastDateHeader = currentDateHeader;
                 }
                 groupedList.add(transaction);
             }
 
             mainThreadHandler.post(() -> {
-                transactionList.clear(); // Clear and add all results for summary calculation
-                transactionList.addAll(results);
-                adapter.setItemList(groupedList); // Update adapter with grouped list
+                adapter.setItemList(groupedList);
                 adapter.notifyDataSetChanged();
-                updateSummary(); // Panggil updateSummary setelah data dimuat
+                // --- PERBAIKAN 3: Kirim data langsung sebagai parameter
+                updateSummary(results);
             });
         });
     }
 
-    private void updateSummary() {
+    // --- PERBAIKAN 4: Metode ini sekarang menerima List sebagai parameter
+    private void updateSummary(List<Transaction> transactionList) {
         double totalIncome = 0;
         double totalExpense = 0;
         double monthlyIncome = 0;
@@ -109,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         int currentMonth = cal.get(Calendar.MONTH);
         int currentYear = cal.get(Calendar.YEAR);
 
-        for (Transaction t : transactionList) {
+        for (Transaction t : transactionList) { // Gunakan parameter, bukan variabel kelas
             cal.setTimeInMillis(t.transactionDate);
             int transactionMonth = cal.get(Calendar.MONTH);
             int transactionYear = cal.get(Calendar.YEAR);
@@ -137,4 +146,3 @@ public class MainActivity extends AppCompatActivity {
         tvExpense.setText(format.format(monthlyExpense));
     }
 }
-

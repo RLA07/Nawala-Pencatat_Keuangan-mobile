@@ -27,8 +27,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/native-image/reflect-config.json"
+            excludes += "META-INF/native-image/resource-config.json"
+        }
     }
 }
 room {
@@ -45,7 +52,8 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("androidx.core:core-splashscreen:1.0.1")
-
+    implementation(libs.itext.kernel)
+    implementation(libs.itext.layout)
     implementation(libs.room.runtime)
     annotationProcessor(libs.room.compiler)
 }

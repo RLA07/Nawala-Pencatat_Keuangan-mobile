@@ -24,4 +24,10 @@ public interface TransactionDao {
 
     @Delete
     void delete(Transaction transaction);
+
+    @Query("DELETE FROM transactions")
+    void deleteAll();
+
+    @Query("SELECT * FROM transactions WHERE transactionDate BETWEEN :startDate AND :endDate ORDER BY transactionDate DESC")
+    List<Transaction> getTransactionsBetweenDates(long startDate, long endDate);
 }
