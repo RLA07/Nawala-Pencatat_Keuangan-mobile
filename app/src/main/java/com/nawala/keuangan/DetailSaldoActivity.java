@@ -144,11 +144,18 @@ public class DetailSaldoActivity extends AppCompatActivity {
     }
 
     private void calculateAndDisplaySummaries(List<Transaction> transactions) {
+        // Variabel untuk ringkasan umum (total, bulanan, mingguan)
         double totalIncome = 0, totalExpense = 0;
         double monthlyIncome = 0, monthlyExpense = 0;
         double weeklyIncome = 0, weeklyExpense = 0;
-        double bankIncome = 0, bankExpense = 0;
-        double walletIncome = 0, walletExpense = 0;
+
+        // Variabel untuk logika saldo Bank & Dompet yang spesifik
+        double initialBankBalance = 0;
+        double initialWalletBalance = 0;
+        double otherBankIncome = 0;
+        double bankExpense = 0;
+        double otherWalletIncome = 0;
+        double walletExpense = 0;
 
         Calendar now = Calendar.getInstance();
         int currentMonth = now.get(Calendar.MONTH);
@@ -162,35 +169,61 @@ public class DetailSaldoActivity extends AppCompatActivity {
             int transYear = transCal.get(Calendar.YEAR);
             int transWeek = transCal.get(Calendar.WEEK_OF_YEAR);
 
-            boolean isIncome = "income".equals(t.type);
+            boolean isIncome = "income".equalsIgnoreCase(t.type);
             double amount = t.amount;
 
+            // Kalkulasi ringkasan umum
             if (isIncome) {
                 totalIncome += amount;
                 if (transYear == currentYear && transMonth == currentMonth) monthlyIncome += amount;
                 if (transYear == currentYear && transWeek == currentWeek) weeklyIncome += amount;
-                if ("Bank".equals(t.source)) bankIncome += amount;
-                if ("Dompet".equals(t.source)) walletIncome += amount;
             } else {
                 totalExpense += amount;
                 if (transYear == currentYear && transMonth == currentMonth) monthlyExpense += amount;
                 if (transYear == currentYear && transWeek == currentWeek) weeklyExpense += amount;
-                if ("Bank".equals(t.source)) bankExpense += amount;
-                if ("Dompet".equals(t.source)) walletExpense += amount;
+            }
+
+            // Logika baru berdasarkan deskripsi "Uang Awal"
+            if ("Uang Awal".equalsIgnoreCase(t.description.trim())) {
+                if ("Bank".equalsIgnoreCase(t.source)) {
+                    initialBankBalance += amount;
+                } else if ("Dompet".equalsIgnoreCase(t.source)) {
+                    initialWalletBalance += amount;
+                }
+            } else { // Transaksi reguler
+                if (isIncome) {
+                    if ("Bank".equalsIgnoreCase(t.source)) {
+                        otherBankIncome += amount;
+                    } else if ("Dompet".equalsIgnoreCase(t.source)) {
+                        otherWalletIncome += amount;
+                    }
+                } else { // Pengeluaran
+                    if ("Bank".equalsIgnoreCase(t.source)) {
+                        bankExpense += amount;
+                    } else if ("Dompet".equalsIgnoreCase(t.source)) {
+                        walletExpense += amount;
+                    }
+                }
             }
         }
 
-        double totalBalance = totalIncome - totalExpense;
-        double bankBalance = bankIncome - bankExpense;
-        double walletBalance = walletIncome - walletExpense;
+        // Perhitungan akhir sesuai logika silang yang diminta
+        // Saldo Bank = (Uang Awal Dompet + Pemasukan Bank Lainnya) - Pengeluaran Bank
+        double finalBankBalance = (initialWalletBalance + otherBankIncome) - bankExpense;
 
+        // Saldo Dompet = (Uang Awal Bank + Pemasukan Dompet Lainnya) - Pengeluaran Dompet
+        double finalWalletBalance = (initialBankBalance + otherWalletIncome) - walletExpense;
+
+        double totalBalance = totalIncome - totalExpense;
+
+        // Update UI
         tvDetailSaldo.setText(formatCurrency(totalBalance));
         tvMonthlyIncome.setText(formatCurrency(monthlyIncome));
         tvMonthlyExpense.setText(formatCurrency(monthlyExpense));
         tvWeeklyIncome.setText(formatCurrency(weeklyIncome));
         tvWeeklyExpense.setText(formatCurrency(weeklyExpense));
-        tvBankBalance.setText(formatCurrency(bankBalance));
-        tvWalletBalance.setText(formatCurrency(walletBalance));
+        tvBankBalance.setText(formatCurrency(finalBankBalance));
+        tvWalletBalance.setText(formatCurrency(finalWalletBalance));
     }
 
     // --- BAGIAN EKSPOR CSV ---
