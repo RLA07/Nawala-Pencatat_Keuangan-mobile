@@ -370,8 +370,19 @@ public class DetailSaldoActivity extends AppCompatActivity {
                 String dateRange = sdf.format(new Date(startDate)) + " - " + sdf.format(new Date(endDate));
                 document.add(new Paragraph(dateRange).setTextAlignment(TextAlignment.CENTER));
 
-                double totalIncome = transactions.stream().filter(t -> t.type.equals("income")).mapToDouble(t -> t.amount).sum();
-                double totalExpense = transactions.stream().filter(t -> t.type.equals("expense")).mapToDouble(t -> t.amount).sum();
+                // --- PERBAIKAN DIMULAI DI SINI ---
+                // Mengganti .stream() dengan perulangan for biasa
+                double totalIncome = 0;
+                double totalExpense = 0;
+                for (Transaction t : transactions) {
+                    if ("income".equals(t.type)) {
+                        totalIncome += t.amount;
+                    } else {
+                        totalExpense += t.amount;
+                    }
+                }
+                // --- PERBAIKAN SELESAI ---
+
                 document.add(new Paragraph("\nRingkasan:").setBold());
                 document.add(new Paragraph("Total Pemasukan: " + formatCurrency(totalIncome)));
                 document.add(new Paragraph("Total Pengeluaran: " + formatCurrency(totalExpense)));
