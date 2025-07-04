@@ -82,7 +82,15 @@ public class EditTransaksiActivity extends AppCompatActivity {
 
     private void populateUI() {
         if (currentTransaction != null) {
-            etAmount.setText(String.valueOf(currentTransaction.amount));
+            double amount = currentTransaction.amount;
+                // Cek apakah angka double ini sebenarnya adalah angka bulat
+            if (amount == (long) amount) {
+                // Jika ya, tampilkan sebagai angka bulat (long)
+                etAmount.setText(String.format(Locale.US, "%d", (long) amount));
+            } else {
+                // Jika tidak (punya desimal), tampilkan apa adanya
+                etAmount.setText(String.valueOf(amount));
+            }
             etDescription.setText(currentTransaction.description);
 
             // Set tanggal transaksi

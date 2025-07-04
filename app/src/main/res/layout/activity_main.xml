@@ -36,27 +36,44 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
-            <LinearLayout
+            app:cardElevation="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:padding="16dp">
+
                 <TextView
+                    android:id="@+id/tvSaldoLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:text="Saldo Saat Ini"/>
+
                 <TextView
                     android:id="@+id/tvSaldo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/tvSaldoLabel"
                     android:text="Rp 0"
                     android:textSize="28sp"
                     android:textColor="#2563EB"
                     android:textStyle="bold"/>
-            </LinearLayout>
+
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/more_vert"
+                    app:tint="?android:attr/textColorSecondary"
+                    android:contentDescription="Lihat Detail" />
+            </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Ringkasan Bulanan -->
@@ -67,7 +84,11 @@
             android:orientation="horizontal"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp">
+            android:layout_marginEnd="16dp"
+
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -80,10 +101,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pemasukan Bulan Ini"/>
+                        android:text="Pemasukan Bulan Ini" />
                     <TextView
                         android:id="@+id/tvIncome"
                         android:layout_width="wrap_content"
